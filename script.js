@@ -27,6 +27,7 @@ function operate(operator, a, b) {
       break;
     case "/":
       return divide(a, b);
+      break;
     default:
       return "ERROR";
   }
