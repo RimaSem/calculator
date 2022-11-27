@@ -3,8 +3,10 @@ let currentValue = "";
 let operator = "";
 
 let clear = document.querySelector(".clear");
+let back = document.querySelector(".back");
 let equal = document.querySelector(".equal");
 let decimal = document.querySelector(".decimal");
+let negative = document.querySelector(".negative");
 let numbers = document.querySelectorAll(".number");
 let operators = document.querySelectorAll(".operator");
 
@@ -17,6 +19,13 @@ clear.addEventListener("click", () => {
   operator = "";
   previousDisplay.textContent = "";
   currentDisplay.textContent = "";
+});
+
+back.addEventListener("click", () => {
+  if (currentDisplay.textContent) {
+    currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
+    currentValue = currentDisplay.textContent;
+  }
 });
 
 numbers.forEach((number) =>
@@ -56,6 +65,15 @@ decimal.addEventListener("click", () => {
   }
 });
 
+negative.addEventListener("click", () => {
+  if (currentDisplay.textContent.startsWith("-")) {
+    currentDisplay.textContent = currentDisplay.textContent.slice(1);
+  } else {
+    currentDisplay.textContent = "-" + currentDisplay.textContent;
+  }
+  currentValue = currentDisplay.textContent;
+});
+
 function add(a, b) {
   return a + b;
 }
@@ -70,6 +88,10 @@ function multiply(a, b) {
 
 function divide(a, b) {
   return a / b;
+}
+
+function remainder(a, b) {
+  return a % b;
 }
 
 function operate(op, a, b) {
@@ -87,6 +109,9 @@ function operate(op, a, b) {
       break;
     case "/":
       previousValue = divide(a, b);
+      break;
+    case "%":
+      previousValue = remainder(a, b);
       break;
     default:
       return "ERROR";
