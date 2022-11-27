@@ -2,7 +2,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  width: 100vw;
+  height: 100vh;
 }
 
 .container {
@@ -10,12 +11,17 @@ body {
 }
 
 .display {
-  font-size: 40px;
+  /*font-size: 40px;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
   border: 1px solid black;
   background-color: rgb(245, 245, 245);
   color: rgb(192, 1, 1);
-  padding: 10px;
   margin-bottom: 20px;
+  width: 300px;
+  height: 75px;
 }
 
 .buttons {
@@ -39,4 +45,14 @@ body {
 .btn:hover {
   cursor: pointer;
   background-color: aliceblue;
+}
+
+.previous {
+  font-size: 20px;
+  height: 30px;
+}
+
+.current {
+  font-size: 30px;
+  height: 30px;
 }
