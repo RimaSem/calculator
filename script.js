@@ -23,7 +23,13 @@ clear.addEventListener("click", () => {
 });
 
 back.addEventListener("click", () => {
-  if (currentDisplay.textContent) {
+  if (currentDisplay.textContent.length <= 1) {
+    previousValue = "";
+    currentValue = "";
+    operator = "";
+    previousDisplay.textContent = "";
+    currentDisplay.textContent = "";
+  } else {
     currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
     currentValue = currentDisplay.textContent;
   }
