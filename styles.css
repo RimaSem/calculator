@@ -12,6 +12,7 @@ body {
 }
 
 .display {
+  /*font-size: 40px;*/
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

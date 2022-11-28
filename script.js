@@ -1,6 +1,7 @@
 let previousValue = "";
 let currentValue = "";
 let operator = "";
+let usedEqual = false;
 
 let clear = document.querySelector(".clear");
 let back = document.querySelector(".back");
@@ -37,19 +38,45 @@ numbers.forEach((number) =>
   })
 );
 
+// operators.forEach((op) =>
+//   op.addEventListener("click", (e) => {
+//     operator = e.target.textContent;
+//     previousValue = currentValue;
+//     currentValue = "";
+//     previousDisplay.textContent = previousValue + " " + operator;
+//     currentDisplay.textContent = currentValue;
+//   })
+// );
+
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
-    operator = e.target.textContent;
-    previousValue = currentValue;
-    currentValue = "";
-    previousDisplay.textContent = previousValue + " " + operator;
-    currentDisplay.textContent = currentValue;
+    if (!operator) {
+      operator = e.target.textContent;
+      previousValue = currentValue;
+      currentValue = "";
+      previousDisplay.textContent = previousValue + " " + operator;
+      currentDisplay.textContent = currentValue;
+    } else if (previousValue != "" && currentValue != "") {
+      if (usedEqual) {
+        usedEqual = !usedEqual;
+        previousValue = currentValue;
+        operator = e.target.textContent;
+        previousDisplay.textContent = previousValue + " " + operator;
+        currentValue = "";
+      } else {
+        operate(operator, previousValue, currentValue);
+        operator = e.target.textContent;
+        previousDisplay.textContent = previousValue + " " + operator;
+        currentValue = "";
+      }
+    }
   })
 );
 
 equal.addEventListener("click", (e) => {
+  usedEqual = !usedEqual;
   if (previousValue != "" && currentValue != "") {
-    result = operate(operator, previousValue, currentValue);
+    operate(operator, previousValue, currentValue);
     previousDisplay.textContent = "";
     if (previousValue.length <= 5) {
       currentDisplay.textContent = previousValue;
@@ -87,6 +114,10 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+  // if (b == 0) {
+  //   currentDisplay.textContent = "ERROR. Can't divide by 0";
+  //   return;
+  // }
   return a / b;
 }
 
