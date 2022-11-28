@@ -2,6 +2,7 @@ let previousValue = "";
 let currentValue = "";
 let operator = "";
 let usedEqual = false;
+let usedNumber = false;
 
 let clear = document.querySelector(".clear");
 let back = document.querySelector(".back");
@@ -20,6 +21,8 @@ clear.addEventListener("click", () => {
   operator = "";
   previousDisplay.textContent = "";
   currentDisplay.textContent = "";
+  usedEqual = false;
+  usedNumber = false;
 });
 
 back.addEventListener("click", () => {
@@ -29,6 +32,8 @@ back.addEventListener("click", () => {
     operator = "";
     previousDisplay.textContent = "";
     currentDisplay.textContent = "";
+    usedEqual = false;
+    usedNumber = false;
   } else {
     currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
     currentValue = currentDisplay.textContent;
@@ -37,6 +42,7 @@ back.addEventListener("click", () => {
 
 numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
+    usedNumber = true;
     if (currentValue.length <= 5) {
       currentValue += e.target.textContent;
     }
@@ -56,7 +62,7 @@ numbers.forEach((number) =>
 
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
-    if (!operator) {
+    if (!operator && usedNumber) {
       operator = e.target.textContent;
       previousValue = currentValue;
       currentValue = "";
@@ -84,17 +90,23 @@ equal.addEventListener("click", (e) => {
   if (previousValue != "" && currentValue != "") {
     operate(operator, previousValue, currentValue);
     previousDisplay.textContent = "";
-    if (previousValue.length <= 5) {
+    if (previousValue.length <= 9) {
       currentDisplay.textContent = previousValue;
     } else {
-      currentDisplay.textContent = previousValue.slice(0, 5) + "...";
+      currentDisplay.textContent = previousValue.slice(0, 10) + "...";
     }
   }
 });
 
 decimal.addEventListener("click", () => {
   if (!currentValue.includes(".")) {
-    currentValue += ".";
+    if (currentValue.length < 1) {
+      currentValue += "0.";
+      currentDisplay.textContent = currentValue;
+    } else {
+      currentValue += ".";
+      currentDisplay.textContent += ".";
+    }
   }
 });
 
@@ -120,10 +132,6 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  // if (b == 0) {
-  //   currentDisplay.textContent = "ERROR. Can't divide by 0";
-  //   return;
-  // }
   return a / b;
 }
 
