@@ -8,39 +8,62 @@ body {
 }
 
 .container {
-  width: 300px;
+  padding-top: 10px;
+  height: 500px;
+  width: 350px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 25px;
 }
 
 .display {
-  /*font-size: 40px;*/
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  border: 1px solid black;
-  background-color: rgb(245, 245, 245);
-  color: rgb(192, 1, 1);
-  margin-bottom: 20px;
-  width: 300px;
-  height: 75px;
+  justify-content: space-around;
+  margin-top: 15px;
+  padding-right: 10px;
+  height: 25%;
+  width: 90%;
+  border: 2px solid black;
+  background-color: rgb(243, 243, 243);
+}
+
+.display > * {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 .buttons {
+  height: 80%;
+  width: 90%;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  row-gap: 15px;
+}
+
+.buttons > * {
+  height: 15%;
+  width: 20%;
 }
 
 .btn-row {
   display: flex;
-  gap: 5px;
+  width: 100%;
+  column-gap: 10px;
 }
 
-.btn {
-  text-align: center;
-  font-size: 32px;
+.btn-row > * {
+  width: 25%;
   border: 1px solid black;
-  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
@@ -54,6 +77,6 @@ body {
 }
 
 .current {
-  font-size: 30px;
+  font-size: 45px;
   height: 30px;
 }

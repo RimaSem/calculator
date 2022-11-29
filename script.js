@@ -50,16 +50,6 @@ numbers.forEach((number) =>
   })
 );
 
-// operators.forEach((op) =>
-//   op.addEventListener("click", (e) => {
-//     operator = e.target.textContent;
-//     previousValue = currentValue;
-//     currentValue = "";
-//     previousDisplay.textContent = previousValue + " " + operator;
-//     currentDisplay.textContent = currentValue;
-//   })
-// );
-
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
     if (!operator && usedNumber) {
@@ -70,7 +60,7 @@ operators.forEach((op) =>
       currentDisplay.textContent = currentValue;
     } else if (previousValue != "" && currentValue != "") {
       if (usedEqual) {
-        usedEqual = !usedEqual;
+        usedEqual = false;
         previousValue = currentValue;
         operator = e.target.textContent;
         previousDisplay.textContent = previousValue + " " + operator;
@@ -86,10 +76,11 @@ operators.forEach((op) =>
 );
 
 equal.addEventListener("click", (e) => {
-  usedEqual = !usedEqual;
+  usedEqual = true;
   if (previousValue != "" && currentValue != "") {
     operate(operator, previousValue, currentValue);
     previousDisplay.textContent = "";
+    currentValue = "";
     if (previousValue.length <= 9) {
       currentDisplay.textContent = previousValue;
     } else {
