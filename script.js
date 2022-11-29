@@ -2,7 +2,6 @@ let previousValue = "";
 let currentValue = "";
 let operator = "";
 let usedEqual = false;
-let usedNumber = false;
 
 let clear = document.querySelector(".clear");
 let back = document.querySelector(".back");
@@ -22,19 +21,20 @@ clear.addEventListener("click", () => {
   previousDisplay.textContent = "";
   currentDisplay.textContent = "";
   usedEqual = false;
-  usedNumber = false;
 });
 
 back.addEventListener("click", () => {
-  if (currentDisplay.textContent.length <= 1) {
+  if (
+    (!previousValue && currentDisplay.textContent.length <= 1) ||
+    (previousValue && usedEqual)
+  ) {
     previousValue = "";
     currentValue = "";
     operator = "";
     previousDisplay.textContent = "";
     currentDisplay.textContent = "";
     usedEqual = false;
-    usedNumber = false;
-  } else {
+  } else if (!previousValue || !usedEqual) {
     currentDisplay.textContent = currentDisplay.textContent.slice(0, -1);
     currentValue = currentDisplay.textContent;
   }
@@ -42,72 +42,75 @@ back.addEventListener("click", () => {
 
 numbers.forEach((number) =>
   number.addEventListener("click", (e) => {
-    usedNumber = true;
-    if (currentValue.length <= 5) {
-      currentValue += e.target.textContent;
+    if (!usedEqual) {
+      if (currentValue.length <= 5) {
+        currentValue += e.target.textContent;
+      }
+      currentDisplay.textContent = currentValue;
     }
-    currentDisplay.textContent = currentValue;
   })
 );
 
 operators.forEach((op) =>
   op.addEventListener("click", (e) => {
-    if (!operator && usedNumber) {
+    if (usedEqual) {
+      usedEqual = false;
       operator = e.target.textContent;
+      previousDisplay.textContent = previousValue + " " + operator;
+      currentValue = "";
+    } else if (currentValue && previousValue) {
+      operate(operator, previousValue, currentValue);
+      operator = e.target.textContent;
+      previousDisplay.textContent = previousValue + " " + operator;
+      currentValue = "";
+    } else if (currentValue) {
+      operator = e.target.textContent;
+      previousDisplay.textContent = currentValue + " " + operator;
       previousValue = currentValue;
       currentValue = "";
-      previousDisplay.textContent = previousValue + " " + operator;
-      currentDisplay.textContent = currentValue;
-    } else if (previousValue != "" && currentValue != "") {
-      if (usedEqual) {
-        usedEqual = false;
-        previousValue = currentValue;
-        operator = e.target.textContent;
-        previousDisplay.textContent = previousValue + " " + operator;
-        currentValue = "";
-      } else {
-        operate(operator, previousValue, currentValue);
-        operator = e.target.textContent;
-        previousDisplay.textContent = previousValue + " " + operator;
-        currentValue = "";
-      }
     }
   })
 );
 
 equal.addEventListener("click", (e) => {
-  usedEqual = true;
   if (previousValue != "" && currentValue != "") {
+    usedEqual = true;
     operate(operator, previousValue, currentValue);
-    previousDisplay.textContent = "";
     currentValue = "";
+    operator = "";
     if (previousValue.length <= 9) {
+      previousDisplay.textContent = "";
       currentDisplay.textContent = previousValue;
     } else {
+      previousDisplay.textContent = "";
       currentDisplay.textContent = previousValue.slice(0, 10) + "...";
     }
   }
 });
 
 decimal.addEventListener("click", () => {
-  if (!currentValue.includes(".")) {
-    if (currentValue.length < 1) {
-      currentValue += "0.";
-      currentDisplay.textContent = currentValue;
-    } else {
-      currentValue += ".";
-      currentDisplay.textContent += ".";
+  if (!usedEqual) {
+    if (!currentValue.includes(".")) {
+      if (currentValue.length < 1) {
+        currentValue += "0.";
+        currentDisplay.textContent = currentValue;
+      } else {
+        currentValue += ".";
+        currentDisplay.textContent += ".";
+      }
     }
   }
 });
 
 negative.addEventListener("click", () => {
-  if (currentDisplay.textContent.startsWith("-")) {
-    currentDisplay.textContent = currentDisplay.textContent.slice(1);
-  } else {
-    currentDisplay.textContent = "-" + currentDisplay.textContent;
+  if (!usedEqual) {
+    if (currentDisplay.textContent.startsWith("-")) {
+      currentDisplay.textContent = currentDisplay.textContent.slice(1);
+    } else {
+      currentDisplay.textContent = "-" + currentDisplay.textContent;
+    }
+    currentValue = currentDisplay.textContent;
   }
-  currentValue = currentDisplay.textContent;
 });
 
 function add(a, b) {
@@ -155,7 +158,7 @@ function operate(op, a, b) {
 
   previousValue = roundNumber(previousValue);
   previousValue = previousValue.toString();
-  currentValue = previousValue.toString();
+  //currentValue = previousValue.toString();
 }
 
 function roundNumber(num) {
