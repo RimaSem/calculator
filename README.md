@@ -1,4 +1,4 @@
-# calculator
+# Calculator
 
 Calculator program created as part of The Odin Project
 
